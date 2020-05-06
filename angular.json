@@ -129,6 +129,7 @@
   },
   "defaultProject": "covid-dashboard",
   "cli": {
-    "analytics": "0e01c238-497e-4e30-9c68-4ff8ebbf590e"
+    "defaultCollection": "@ngrx/schematics",
+    "analytics": "f3f370c8-4d1f-4b8f-8286-4e18f304adab"
   }
 }

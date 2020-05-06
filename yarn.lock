@@ -188,6 +188,11 @@
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-9.1.4.tgz#85f5322f42cf8add597fc6b02913e8fc3308c361"
   integrity sha512-ND240vncmVD2KVe/KSQU3d/DxxoRipFg1+jFOFZGt0n0orCBHk/V1fu9iaG1sRyldL0+rCQ+fTI+1N4DTmMnxA==
 
+"@angular/flex-layout@^9.0.0-beta.29":
+  version "9.0.0-beta.29"
+  resolved "https://registry.yarnpkg.com/@angular/flex-layout/-/flex-layout-9.0.0-beta.29.tgz#a334ffd15c272e2d48cdaef3879625aadcc13a54"
+  integrity sha512-93sxR+kYfYMOdnlWL0Q77FZ428gg8XnBu0YZm6GsCdkw/vLggIT/G1ZAqHlCPIODt6pxmCJ5KXh4ShvniIYDsA==
+
 "@angular/forms@~9.1.4":
   version "9.1.4"
   resolved "https://registry.yarnpkg.com/@angular/forms/-/forms-9.1.4.tgz#7cb75b5731bd6cbcf4a45b7b2cc68b3581de8cc1"
@@ -1007,6 +1012,31 @@
     merge-source-map "^1.1.0"
     schema-utils "^2.6.4"
 
+"@ngrx/effects@^9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-9.1.0.tgz#b977780ce9e58632ae8e2f259741a3861bbbbfe4"
+  integrity sha512-DPMtp/2YTrvuxMqaehQ39FeoNODuMcRB6xDImvrnMFPIkUcP3mDHnIg6UB5c2JvfHlZZClKR+Fb+RE2nuVub8w==
+
+"@ngrx/entity@^9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/entity/-/entity-9.1.0.tgz#2f5fe5f5277db532d9223c70687d252490c560f3"
+  integrity sha512-MrjdJeJIaUpPogxzK7S/z5Cc/6XWyyQfUgkXrTS20JZyX4amjVZYL3oU3FF3JhXO9ZkhaBFi07IDPEtvyYl/Mg==
+
+"@ngrx/schematics@^9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/schematics/-/schematics-9.1.0.tgz#05428023a4e0a9b35521c85d0ec80c905bb34963"
+  integrity sha512-CYfBFP/jCNFFQkV+Afc4kPCRf3Ye2NlNIEwU5urtZMt8WV8RWFbzsbL0O9UMH6zshPvwoZoBqU/5ZftZupxcHA==
+
+"@ngrx/store-devtools@^9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/store-devtools/-/store-devtools-9.1.0.tgz#503f6468454bb633433408884b99377716f9d884"
+  integrity sha512-KDvuNBxfTgDHjESiouEoPXq8GCUYbHnA+jOs8MzzwVDmxNLeZuDy3amaVzKv9Q5nncI6mNGcXOzTKWzapET8Sw==
+
+"@ngrx/store@^9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-9.1.0.tgz#1339716a34e2b389979d25464bb32b0dba799557"
+  integrity sha512-Ah2nApPZXTvKl7ybaFMIFwEdMg8b7PvIKATigbDTUftAsFxked2+T7blNv6aCgSfEqbOVMBTYPk7OsLCYZoz4Q==
+
 "@ngtools/webpack@9.1.4":
   version "9.1.4"
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-9.1.4.tgz#8866d8461969662d0860d857aafa5a706877f85d"
@@ -1039,6 +1069,11 @@
     rxjs "6.5.4"
     semver "7.1.3"
     semver-intersect "1.4.0"
+
+"@types/arcgis-js-api@^4.15.0":
+  version "4.15.0"
+  resolved "https://registry.yarnpkg.com/@types/arcgis-js-api/-/arcgis-js-api-4.15.0.tgz#f29f123c55cf210bf0108d671f62104f08aaab2a"
+  integrity sha512-8k3izWm6TBuNgYjYr7k5S9aXpzJ6R51g3HMecQvB4CAD5tgO+kUFn3i1BPnfweAPnrURei9ponU9QL1N5o0BhA==
 
 "@types/color-name@^1.1.1":
   version "1.1.1"
@@ -3284,6 +3319,11 @@ esrecurse@^4.1.0:
   integrity sha512-64RBB++fIOAXPw3P9cy89qfMlvZEXZkqqJkjqqXIvzP5ezRZjW+lPWjw35UX/3EhUPFYbg5ER4JYgDw4007/DQ==
   dependencies:
     estraverse "^4.1.0"
+
+esri-loader@^2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/esri-loader/-/esri-loader-2.14.0.tgz#2a7e6dc1226945f88f1a92ee4b9dcadb256f406c"
+  integrity sha512-ptDU9FyYeiY3etp3WaQNRJ6gIo3+R6umQ9r00QF96OkRjtZReEvKdbje5KbKLuAs/LKLwbivddL2izKvL4HSoQ==
 
 estraverse@^4.1.0, estraverse@^4.1.1:
   version "4.3.0"
