@@ -1,0 +1,24 @@
+:host {
+  display: flex;
+}
+.chip {
+  height: 150px;
+  width: 150px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  text-align: center;
+  vertical-align: middle;
+  line-height: 150px;
+  margin: 15px;
+  border-radius: 50%;
+  &.death {
+    background: darkred;
+  }
+  &.recovered {
+    background: darkgreen;
+  }
+  &.confirmed {
+    background: darkorange;
+  }
+}
