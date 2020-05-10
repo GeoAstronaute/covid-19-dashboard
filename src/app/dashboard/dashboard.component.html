@@ -1,23 +1,28 @@
-<div class="grid-container">
-  <mat-grid-list cols="2" rowHeight="350px">
-    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
-      <mat-card class="dashboard-card">
-        <mat-card-header>
-          <mat-card-title>
-            {{card.title}}
-            <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item>Expand</button>
-              <button mat-menu-item>Remove</button>
-            </mat-menu>
-          </mat-card-title>
-        </mat-card-header>
-        <mat-card-content class="dashboard-card-content">
-          <div>Card Content Here</div>
-        </mat-card-content>
-      </mat-card>
-    </mat-grid-tile>
-  </mat-grid-list>
+<div fxFlex fxLayout="row">
+  <div fxFlex fxLayout="column">
+    <mat-card fxLayout="column" style="height: 244px;">
+      <mat-card-header>
+        <mat-card-title>Latest data</mat-card-title>
+      </mat-card-header>
+      <co19-covid-recap-data *ngIf="isCovidDataLoaded$ | async"
+        [deaths]="totalDeaths$ | async"
+        [confirmed]="totalConfirmed$ | async"
+        [recovered]="totalRecovered$ | async">
+      </co19-covid-recap-data>
+    </mat-card>
+    <mat-card fxFlex fxLayout="column">
+      <mat-card-header>
+        <mat-card-title>Latest data by countries</mat-card-title>
+      </mat-card-header>
+      <co19-covid-data-table *ngIf="latestData$ | async"  fxFlex></co19-covid-data-table>
+    </mat-card>
+  </div>
+  <div fxLayout="row" fxFlex>
+    <mat-card fxFlex fxLayout="column">
+      <mat-card-header>
+        <mat-card-title>World map</mat-card-title>
+      </mat-card-header>
+      <co19-covid-webmap fxFlex fxLayout="column"></co19-covid-webmap>
+    </mat-card>
+  </div>
 </div>

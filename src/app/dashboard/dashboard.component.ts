@@ -1,33 +1,21 @@
-import { Component } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import * as fromRoot from '../stores';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'co19-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent {
-  /** Based on the screen size, switch from standard to one column per row */
-  cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) {
-        return [
-          { title: 'Card 1', cols: 1, rows: 1 },
-          { title: 'Card 2', cols: 1, rows: 1 },
-          { title: 'Card 3', cols: 1, rows: 1 },
-          { title: 'Card 4', cols: 1, rows: 1 }
-        ];
-      }
+export class DashboardComponent implements OnInit {
+  isCovidDataLoaded$ = this.store.select(fromRoot.isLoaded);
+  totalDeaths$ = this.store.select(fromRoot.totalDeaths);
+  totalConfirmed$ = this.store.select(fromRoot.totalConfirmed);
+  totalRecovered$ = this.store.select(fromRoot.totalRecovered);
+  latestData$ = this.store.select(fromRoot.selectLatestDataWithCountryInfo);
 
-      return [
-        { title: 'Card 1', cols: 2, rows: 1 },
-        { title: 'Card 2', cols: 1, rows: 1 },
-        { title: 'Card 3', cols: 1, rows: 2 },
-        { title: 'Card 4', cols: 1, rows: 1 }
-      ];
-    })
-  );
+  constructor(private store: Store) {}
 
-  constructor(private breakpointObserver: BreakpointObserver) {}
+  ngOnInit() {}
 }

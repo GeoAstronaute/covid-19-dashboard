@@ -4,12 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
@@ -27,6 +22,10 @@ import { CountryEffects } from './stores/country/country.effects';
 
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
+import { CovidDataTableModule } from './covid-data-table/covid-data-table.module';
+import { CovidRecapDataModule } from './covid-recap-data/covid-recap-data.module';
+import { WebmapModule } from './webmap/webmap.module';
+import { CovidWebmapModule } from './covid-webmap/covid-webmap.module';
 registerLocaleData(localeFr, 'fr');
 
 @NgModule({
@@ -40,13 +39,12 @@ registerLocaleData(localeFr, 'fr');
     BrowserAnimationsModule,
     HttpClientModule,
     MatToolbarModule,
-    MatGridListModule,
     MatCardModule,
-    MatMenuModule,
-    MatIconModule,
-    MatButtonModule,
-    LayoutModule,
     FlexLayoutModule,
+    CovidDataTableModule,
+    CovidRecapDataModule,
+    WebmapModule,
+    CovidWebmapModule,
     StoreModule.forRoot({
       covidData: covidReducer,
       countries: countryReducer
