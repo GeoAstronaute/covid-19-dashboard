@@ -1,13 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { WebmapComponent } from './webmap/webmap.component';
+import { WebmapTypeSwitchComponent } from './webmap-type-switch/webmap-type-switch.component';
 
 
 
 @NgModule({
-  declarations: [WebmapComponent],
+  declarations: [WebmapComponent, WebmapTypeSwitchComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    MatButtonToggleModule
   ],
   exports: [WebmapComponent]
 })

@@ -4,4 +4,10 @@
 }
 #webmap {
   width: 100%;
+  position: relative;
+  .type-switcher {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
 }
