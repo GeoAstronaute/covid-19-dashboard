@@ -1,20 +1,16 @@
-<!-- <div *ngFor="let data of data" fxLayout="row" fxLayoutAlign="center center" >
-  <img [src]="data.flag" alt="Flag" class="flag">
-  <div fxFlex>{{ data.countryOrRegion }}</div>
-  <div fxFlex class="confirmed">{{ data.confirmed | number:'':'fr'}}</div>
-  <div fxFlex class="death">{{ data.deaths | number:'':'fr'}}</div>
-  <div fxFlex class="recovered">{{ data.recovered | number:'':'fr'}}</div>
-</div> -->
 <div fxFlex fxLayout="column">
-  <div fxLayout="row" fxLayoutAlign="center center">
+  <div fxLayout="row" fxLayoutAlign="center center" class="header">
     <div class="flag-container"></div>
     <div fxFlex>Country</div>
     <div fxFlex>Confirmed</div>
     <div fxFlex>Deaths</div>
     <div fxFlex>Recovered</div>
   </div>
-  <cdk-virtual-scroll-viewport itemSize="31" fxFlex>
-    <div *cdkVirtualFor="let item of latestData$ | async" fxLayout="row" fxLayoutAlign="center center" class="table-cell">
+  <cdk-virtual-scroll-viewport itemSize="26" fxFlex>
+    <div *cdkVirtualFor="let item of latestData$ | async; trackBy: trackByUid"
+
+    fxLayout="row" fxLayoutAlign="center center"
+    class="table-cell" [class.selected]="item.selected" (click)="selectCountry(item.alpha2Code)">
       <div class="flag-container">
         <img [src]="item.flag" alt="Flag">
       </div>
@@ -22,6 +18,9 @@
       <div fxFlex class="confirmed">{{ item.confirmed | number:'':'fr'}}</div>
       <div fxFlex class="death">{{ item.deaths | number:'':'fr'}}</div>
       <div fxFlex class="recovered">{{ item.recovered | number:'':'fr'}}</div>
+      <!-- <div fxFlex>
+        {{item.alpha2Code}}
+      </div> -->
     </div>
   </cdk-virtual-scroll-viewport>
 </div>

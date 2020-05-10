@@ -3,19 +3,28 @@
 .flag-container {
   height: 25px;
   width: 50px;
-  margin: 5px 5px 0 10px;
   img {
     height: 25px;
     width: 50px;
     object-fit: cover;
+    margin: auto;
   }
+}
+.header {
+  text-align: center;
 }
 .table-cell {
   border-top: solid 1px lightgray;
   font-weight: bold;
+  text-align: center;
+  &.selected {
+    background: lightblue;
+  }
   &:hover {
-    background: #FAFAFA;
     cursor: pointer;
+  }
+  &:hover:not(.selected) {
+    background: #FAFAFA;
   }
   .death {
     color: $deaths-color;

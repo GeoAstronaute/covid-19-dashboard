@@ -1,6 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import * as fromRoot from '../../stores';
+import { selectCountry } from 'src/app/stores/country/country.actions';
 
 @Component({
   selector: 'co19-covid-data-table',
@@ -14,5 +15,13 @@ export class CovidDataTableComponent implements OnInit {
   constructor(private store: Store) { }
 
   ngOnInit(): void {}
+
+  selectCountry(id: string) {
+    this.store.dispatch(selectCountry({selected: id}));
+  }
+
+  trackByUid(index, item) {
+    return item.uid;
+  }
 
 }
