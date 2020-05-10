@@ -1,5 +1,6 @@
 export interface CovidLatestData {
   uid: number;
+  countryOrRegion: string;
   lastUpdate: number;
   confirmed: number;
   deaths: number;

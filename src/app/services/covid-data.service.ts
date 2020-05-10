@@ -21,6 +21,7 @@ export class CovidDataService {
     query.returnGeometry = false;
     query.outFields = [
       'UID as uid',
+      'Country_Region as countryOrRegion',
       'Last_Update as lastUpdate',
       'Confirmed as confirmed',
       'Deaths as deaths',

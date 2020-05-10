@@ -22,6 +22,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { GlobalEffects } from './stores/covid-data/covid-data.effects';
 import { environment } from '../environments/environment';
 import { covidReducer } from './stores/covid-data/covid-data.reducer';
+import { countryReducer } from './stores/country/country.reducer';
+import { CountryEffects } from './stores/country/country.effects';
 
 @NgModule({
   declarations: [
@@ -42,9 +44,10 @@ import { covidReducer } from './stores/covid-data/covid-data.reducer';
     LayoutModule,
     FlexLayoutModule,
     StoreModule.forRoot({
-      covidData: covidReducer
+      covidData: covidReducer,
+      countries: countryReducer
     }, {}),
-    EffectsModule.forRoot([GlobalEffects]),
+    EffectsModule.forRoot([GlobalEffects, CountryEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })
   ],
   bootstrap: [AppComponent]
