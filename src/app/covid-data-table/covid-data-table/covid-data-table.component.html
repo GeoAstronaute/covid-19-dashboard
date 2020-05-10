@@ -5,14 +5,23 @@
   <div fxFlex class="death">{{ data.deaths | number:'':'fr'}}</div>
   <div fxFlex class="recovered">{{ data.recovered | number:'':'fr'}}</div>
 </div> -->
-<cdk-virtual-scroll-viewport itemSize="31" fxFlex>
-  <div *cdkVirtualFor="let item of latestData$ | async" fxLayout="row" fxLayoutAlign="center center" class="table-cell">
-    <div class="flag-container">
-      <img [src]="item.flag" alt="Flag">
-    </div>
-    <div fxFlex>{{ item.countryOrRegion }}</div>
-    <div fxFlex class="confirmed">{{ item.confirmed | number:'':'fr'}}</div>
-    <div fxFlex class="death">{{ item.deaths | number:'':'fr'}}</div>
-    <div fxFlex class="recovered">{{ item.recovered | number:'':'fr'}}</div>
+<div fxFlex fxLayout="column">
+  <div fxLayout="row" fxLayoutAlign="center center">
+    <div class="flag-container"></div>
+    <div fxFlex>Country</div>
+    <div fxFlex>Confirmed</div>
+    <div fxFlex>Deaths</div>
+    <div fxFlex>Recovered</div>
   </div>
-</cdk-virtual-scroll-viewport>
+  <cdk-virtual-scroll-viewport itemSize="31" fxFlex>
+    <div *cdkVirtualFor="let item of latestData$ | async" fxLayout="row" fxLayoutAlign="center center" class="table-cell">
+      <div class="flag-container">
+        <img [src]="item.flag" alt="Flag">
+      </div>
+      <div fxFlex>{{ item.countryOrRegion }}</div>
+      <div fxFlex class="confirmed">{{ item.confirmed | number:'':'fr'}}</div>
+      <div fxFlex class="death">{{ item.deaths | number:'':'fr'}}</div>
+      <div fxFlex class="recovered">{{ item.recovered | number:'':'fr'}}</div>
+    </div>
+  </cdk-virtual-scroll-viewport>
+</div>
