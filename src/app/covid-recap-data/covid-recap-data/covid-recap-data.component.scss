@@ -1,3 +1,4 @@
+@import '~src/styles/variables.scss';
 :host {
   display: flex;
 }
@@ -5,20 +6,35 @@
   height: 150px;
   width: 150px;
   color: white;
-  font-weight: bold;
   font-size: 20px;
-  text-align: center;
-  vertical-align: middle;
-  line-height: 150px;
   margin: 15px;
   border-radius: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  position: relative;
+  .title {
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    top: 30px;
+    left: auto;
+    height: 20px;
+  }
+  .count {
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    top: 75px;
+    margin: auto;
+    height: 20px;
+    font-weight: bold;
+  }
   &.death {
-    background: darkred;
+    background: $deaths-color;
   }
   &.recovered {
-    background: darkgreen;
+    background: $recovered-color;
   }
   &.confirmed {
-    background: darkorange;
+    background: $confirmed-color;
   }
 }

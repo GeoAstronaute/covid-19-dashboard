@@ -1,11 +1,26 @@
 <div fxLayout="row">
-  <div class="chip death">
-    {{ deaths | number:'':'fr'}}
-  </div>
   <div class="chip confirmed">
-    {{ confirmed | number:'':'fr'}}
+    <div class="title">
+      Confirmed
+    </div>
+    <div class="count">
+      {{ confirmed | number:'':'fr'}}
+    </div>
+  </div>
+  <div class="chip death">
+    <div class="title">
+      Deaths
+    </div>
+    <div class="count">
+      {{ deaths | number:'':'fr'}}
+    </div>
   </div>
   <div class="chip recovered">
-    {{ recovered | number:'':'fr'}}
+    <div class="title">
+      Recovered
+    </div>
+    <div class="count">
+      {{ recovered | number:'':'fr'}}
+    </div>
   </div>
 </div>
