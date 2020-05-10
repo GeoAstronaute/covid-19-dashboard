@@ -10,3 +10,8 @@ export const loadCountriesFail = createAction(
   '[Api/Countries] Load data fail',
   props<{ error: any }>()
 );
+
+export const selectCountry = createAction(
+  '[Countries] Select country',
+  props<{selected: string}>()
+);

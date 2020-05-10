@@ -9,7 +9,7 @@ export interface Country {
   region: string;
   subregion: string;
   population: string;
-  latlng: string;
+  latlng: [number, number];
   demonym: string;
   area: number;
   gini: string;

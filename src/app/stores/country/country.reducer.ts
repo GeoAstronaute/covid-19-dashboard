@@ -4,7 +4,7 @@ import {
   on
 } from '@ngrx/store';
 import { Country } from '../../models/country.service';
-import { loadCountriesSuccess } from './country.actions';
+import { loadCountriesSuccess, selectCountry } from './country.actions';
 
 export interface CountryState {
   inited: boolean;
@@ -23,6 +23,10 @@ export const countryReducer = createReducer(
     inited: true,
     entities: countries
   })),
+  on(selectCountry, (state, {selected}) => ({
+    ...state,
+    selected
+  }))
 );
 
 export function reducer(state: CountryState | undefined, action: Action) {

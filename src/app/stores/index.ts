@@ -54,21 +54,33 @@ export const selectAllCountries = createSelector(
   selectCountryState,
   (countryState) => countryState.entities
 );
+export const getSelectedCountryId = createSelector(
+  selectCountryState,
+  (countryState) => countryState.selected
+);
 
 export const selectLatestDataWithCountryInfo = createSelector(
+  getSelectedCountryId,
   selectLatestData,
   selectAllCountries,
-  (covidLatestData, allCountries) => {
+  (selectedCountryId, covidLatestData, allCountries) => {
     if (covidLatestData?.length && allCountries?.length) {
       return covidLatestData.map((data) => {
         const correspondingCountry = allCountries.find(c => c.alpha3Code === data.iso3);
         const result = {
           ...data,
-          ...correspondingCountry
+          ...correspondingCountry,
+          selected: selectedCountryId === correspondingCountry?.alpha2Code
         };
         return result;
       });
     }
     return null;
   }
+);
+
+export const getSelectedCountry = createSelector(
+  selectAllCountries,
+  getSelectedCountryId,
+  (allCountries, selected) => allCountries?.find(country => country.alpha2Code === selected)
 );
