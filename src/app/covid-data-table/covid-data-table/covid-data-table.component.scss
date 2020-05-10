@@ -1,0 +1,27 @@
+.flag-container {
+  height: 25px;
+  width: 50px;
+  margin: 5px 5px 0 10px;
+  img {
+    height: 25px;
+    width: 50px;
+    object-fit: cover;
+  }
+}
+.table-cell {
+  border-top: solid 1px lightgray;
+  font-weight: bold;
+  &:hover {
+    background: #FAFAFA;
+    cursor: pointer;
+  }
+  .death {
+    color: darkred;
+  }
+  .recovered {
+    color: darkgreen;
+  }
+  .confirmed {
+    color: darkorange;
+  }
+}

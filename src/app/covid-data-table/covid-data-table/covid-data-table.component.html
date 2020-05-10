@@ -1,0 +1,18 @@
+<!-- <div *ngFor="let data of data" fxLayout="row" fxLayoutAlign="center center" >
+  <img [src]="data.flag" alt="Flag" class="flag">
+  <div fxFlex>{{ data.countryOrRegion }}</div>
+  <div fxFlex class="confirmed">{{ data.confirmed | number:'':'fr'}}</div>
+  <div fxFlex class="death">{{ data.deaths | number:'':'fr'}}</div>
+  <div fxFlex class="recovered">{{ data.recovered | number:'':'fr'}}</div>
+</div> -->
+<cdk-virtual-scroll-viewport itemSize="31" fxFlex>
+  <div *cdkVirtualFor="let item of latestData$ | async" fxLayout="row" fxLayoutAlign="center center" class="table-cell">
+    <div class="flag-container">
+      <img [src]="item.flag" alt="Flag">
+    </div>
+    <div fxFlex>{{ item.countryOrRegion }}</div>
+    <div fxFlex class="confirmed">{{ item.confirmed | number:'':'fr'}}</div>
+    <div fxFlex class="death">{{ item.deaths | number:'':'fr'}}</div>
+    <div fxFlex class="recovered">{{ item.recovered | number:'':'fr'}}</div>
+  </div>
+</cdk-virtual-scroll-viewport>
