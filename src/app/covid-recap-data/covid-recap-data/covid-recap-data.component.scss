@@ -16,15 +16,23 @@
     width: 100%;
     position: absolute;
     top: 30px;
-    left: auto;
     height: 20px;
+    font-size: 15px;
   }
   .count {
     text-align: center;
     width: 100%;
     position: absolute;
-    top: 75px;
-    margin: auto;
+    top: 65px;
+    height: 20px;
+    font-weight: bold;
+  }
+  .percent {
+    font-size: 12px;
+    text-align: center;
+    width: 100%;
+    position: absolute;
+    top: 90px;
     height: 20px;
     font-weight: bold;
   }

@@ -14,6 +14,9 @@
     <div class="count">
       {{ deaths | number:'':'fr'}}
     </div>
+    <div class="percent">
+      ({{ (deaths/confirmed) | percent}})
+    </div>
   </div>
   <div class="chip recovered">
     <div class="title">
@@ -21,6 +24,9 @@
     </div>
     <div class="count">
       {{ recovered | number:'':'fr'}}
+    </div>
+    <div class="percent">
+      ({{ (recovered/confirmed) | percent}})
     </div>
   </div>
 </div>
