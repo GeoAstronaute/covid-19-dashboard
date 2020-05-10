@@ -25,6 +25,10 @@ import { covidReducer } from './stores/covid-data/covid-data.reducer';
 import { countryReducer } from './stores/country/country.reducer';
 import { CountryEffects } from './stores/country/country.effects';
 
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+registerLocaleData(localeFr, 'fr');
+
 @NgModule({
   declarations: [
     AppComponent,
