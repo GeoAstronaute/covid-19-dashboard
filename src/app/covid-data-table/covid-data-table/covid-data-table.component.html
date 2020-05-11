@@ -1,4 +1,4 @@
-<div fxFlex fxLayout="column">
+<!-- <div fxFlex fxLayout="column">
   <div fxLayout="row" fxLayoutAlign="center center" class="header">
     <div class="flag-container"></div>
     <div fxFlex>Country</div>
@@ -7,20 +7,48 @@
     <div fxFlex>Recovered</div>
   </div>
   <cdk-virtual-scroll-viewport itemSize="26" fxFlex>
-    <div *cdkVirtualFor="let item of latestData$ | async; trackBy: trackByUid"
-
-    fxLayout="row" fxLayoutAlign="center center"
-    class="table-cell" [class.selected]="item.selected" (click)="selectCountry(item.alpha2Code)">
+    <div
+      *cdkVirtualFor="let item of latestData$ | async; trackBy: trackByUid"
+      fxLayout="row"
+      fxLayoutAlign="center center"
+      class="table-cell"
+      [class.selected]="item.selected"
+      (click)="selectCountry(item.alpha2Code)"
+    >
       <div class="flag-container">
-        <img [src]="item.flag" alt="Flag">
+        <img [src]="item.flag" alt="Flag" />
       </div>
       <div fxFlex>{{ item.countryOrRegion }}</div>
-      <div fxFlex class="confirmed">{{ item.confirmed | number:'':'fr'}}</div>
-      <div fxFlex class="death">{{ item.deaths | number:'':'fr'}}</div>
-      <div fxFlex class="recovered">{{ item.recovered | number:'':'fr'}}</div>
-      <!-- <div fxFlex>
+      <div fxFlex class="confirmed">{{ item.confirmed | number: "":"fr" }}</div>
+      <div fxFlex class="death">{{ item.deaths | number: "":"fr" }}</div>
+      <div fxFlex class="recovered">{{ item.recovered | number: "":"fr" }}</div>
+      <div fxFlex>
         {{item.alpha2Code}}
-      </div> -->
+      </div>
     </div>
   </cdk-virtual-scroll-viewport>
-</div>
+</div> -->
+<table fxFlex fxLayout="column" matSort (matSortChange)="sortData($event)">
+  <tr class="header" fxLayout="row" fxLayoutAlign="center center">
+    <th class="flag-container" style="margin: auto;"></th>
+    <th fxFlex mat-sort-header="countryOrRegion">Country</th>
+    <th fxFlex mat-sort-header="confirmed">Confirmed</th>
+    <th fxFlex mat-sort-header="deaths">Deaths</th>
+    <th fxFlex mat-sort-header="recovered">Recovered</th>
+    <th fxFlex mat-sort-header="population">Population</th>
+  </tr>
+  <cdk-virtual-scroll-viewport itemSize="26" fxFlex>
+    <tr fxLayout="row" fxLayoutAlign="center center"
+      class="table-cell" [class.selected]="item.selected"
+      *cdkVirtualFor="let item of latestDataWithSelection$ | async; trackBy: trackByUid;"
+      (click)="selectCountry(item.alpha2Code)"
+    >
+      <td class="flag-container"><img *ngIf="item.flag" [src]="item.flag" alt="Flag" /></td>
+      <td fxFlex>{{ item.countryOrRegion }}</td>
+      <td fxFlex class="confirmed">{{ item.confirmed | number: "":"fr" }}</td>
+      <td fxFlex class="death">{{ item.deaths | number: "":"fr" }}</td>
+      <td fxFlex class="recovered">{{ item.recovered | number: "":"fr" }}</td>
+      <td fxFlex>{{ item.population | number: "":"fr" }}</td>
+    </tr>
+  </cdk-virtual-scroll-viewport>
+</table>

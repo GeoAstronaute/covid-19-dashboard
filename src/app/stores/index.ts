@@ -60,17 +60,15 @@ export const getSelectedCountryId = createSelector(
 );
 
 export const selectLatestDataWithCountryInfo = createSelector(
-  getSelectedCountryId,
   selectLatestData,
   selectAllCountries,
-  (selectedCountryId, covidLatestData, allCountries) => {
+  (covidLatestData, allCountries) => {
     if (covidLatestData?.length && allCountries?.length) {
       return covidLatestData.map((data) => {
         const correspondingCountry = allCountries.find(c => c.alpha3Code === data.iso3);
         const result = {
           ...data,
-          ...correspondingCountry,
-          selected: selectedCountryId === correspondingCountry?.alpha2Code
+          ...correspondingCountry
         };
         return result;
       });
