@@ -27,7 +27,7 @@ export class WebmapComponent implements OnInit {
       __esri.MapConstructor
     ] = await loadModules(['esri/Map']);
     this.map = new Map({
-      basemap: 'hybrid',
+      basemap: 'gray',
     });
     this.type === '2D' ? await this.buildMapView() : await this.buildSceneView();
     this.mapInit.emit();
@@ -69,8 +69,8 @@ export class WebmapComponent implements OnInit {
   }
 
   async updateView(type) {
-    this.typeChange.emit(type);
     type === '2D' ? await this.buildMapView() : await this.buildSceneView();
+    this.typeChange.emit(type);
     this.addWidgets(this.view);
   }
 
