@@ -10,12 +10,14 @@ export class CovidWebmapLayerService {
   constructor() {}
 
   async buildLayer(covidData) {
-    const [FeatureLayer, ClassBreaksRenderer]: [
+    const [FeatureLayer, ClassBreaksRenderer, geometryEngine]: [
       __esri.FeatureLayerConstructor,
-      any
+      any,
+      __esri.geometryEngine
     ] = await loadModules([
       'esri/layers/FeatureLayer',
       'esri/renderers/ClassBreaksRenderer',
+      'esri/geometry/geometryEngine'
     ]);
     const countryLayer = new FeatureLayer({
       url:
@@ -31,7 +33,7 @@ export class CovidWebmapLayerService {
         (d) => d.alpha2Code === graphic.attributes.iso2
       );
       return {
-        geometry: graphic.geometry,
+        geometry: geometryEngine.simplify(graphic.geometry),
         attributes: {
           ...graphic.attributes,
           ...relatedCovidData,
@@ -116,44 +118,16 @@ export class CovidWebmapLayerService {
   }
 
   async buildRenderer(field: string) {
+    const [colorRendererCreator, colorScheme]: [any, any] = await loadModules(['esri/renderers/smartMapping/creators/color', 'esri/renderers/smartMapping/symbology/color']);
+    const generatedColorScheme = colorScheme.getSchemeByName({name: 'Red and Green 9', geometryType: 'polygon', theme: 'above-and-below'});
+    const transformedColorScheme = colorScheme.flipColors(generatedColorScheme);
     const params = {
       layer: this.layer,
       classificationMethod: 'natural-breaks',
       field,
-      // colorScheme: {
-      //   id: 'CustomScheme',
-      //   colors: new Array(['#B9DC45', '#E7F317', '#FFF300', '#FFB900', '#FF8B00', '#FF0000']),
-      //   theme: 'high-to-low',
-      //   noDataColor: 'gray',
-      //   numClasses: 6
-      //   // colorsForClassBreaks: [{
-      //   //     color: ['#B9DC45'],
-      //   //     numClasses: 1
-      //   //   },
-      //   //   {
-      //   //     color: ['#E7F317'],
-      //   //     numClasses: 2
-      //   //   },
-      //   //   {
-      //   //     color: ['#FFF300'],
-      //   //     numClasses: 3
-      //   //   },
-      //   //   {
-      //   //     color: ['#FFB900'],
-      //   //     numClasses: 4
-      //   //   },
-      //   //   {
-      //   //     color: ['#FF8B00'],
-      //   //     numClasses: 5
-      //   //   },
-      //   //   {
-      //   //     color: ['#FF0000'],
-      //   //     numClasses: 6
-      //   //   }
-      //   // ]
-      // }
+      numClasses: 10,
+      colorScheme: transformedColorScheme
     };
-    const [colorRendererCreator, colorScheme] = await loadModules(['esri/renderers/smartMapping/creators/color', 'esri/renderers/smartMapping/symbology/color']);
     const rendererResponse = await colorRendererCreator.createClassBreaksRenderer(params);
     this.layer.renderer = rendererResponse.renderer;
   }
