@@ -6,17 +6,16 @@ import { loadModules } from 'esri-loader';
 })
 export class CovidWebmapLayerService {
   layer: __esri.FeatureLayer;
+  renderersCache: {[rendererName: string]: __esri.Renderer} = {};
 
   constructor() {}
 
   async buildLayer(covidData) {
-    const [FeatureLayer, ClassBreaksRenderer, geometryEngine]: [
+    const [FeatureLayer, geometryEngine]: [
       __esri.FeatureLayerConstructor,
-      any,
       __esri.geometryEngine
     ] = await loadModules([
       'esri/layers/FeatureLayer',
-      'esri/renderers/ClassBreaksRenderer',
       'esri/geometry/geometryEngine'
     ]);
     const countryLayer = new FeatureLayer({
@@ -75,60 +74,50 @@ export class CovidWebmapLayerService {
         },
       ],
     });
-    // const popup = this.layer.createPopupTemplate();
-    // this.layer.popupTemplate = popup;
-    // const renderer = new ClassBreaksRenderer({
-    //   // attribute of interest - Earthquake magnitude
-    //   field: 'deaths',
-    //   defaultSymbol: {
-    //     type: 'simple-fill',
-    //     color: 'gray',
-    //   },
-    // });
-
-    // renderer.addClassBreakInfo({
-    //   minValue: 0,
-    //   maxValue: 0,
-    //   symbol: {
-    //     type: 'simple-fill',
-    //     color: 'green',
-    //   },
-    // });
-
-    // renderer.addClassBreakInfo({
-    //   minValue: 1,
-    //   maxValue: 1000,
-    //   symbol: {
-    //     type: 'simple-fill',
-    //     color: 'orange',
-    //   },
-    // });
-
-    // renderer.addClassBreakInfo({
-    //   minValue: 1000,
-    //   maxValue: 1000000,
-    //   symbol: {
-    //     type: 'simple-fill',
-    //     color: 'red',
-    //   },
-    // });
-    // this.layer.renderer = renderer;
-    await this.buildRenderer('deaths');
+    await this.setRenderer('deaths', true);
     return this.layer;
   }
 
-  async buildRenderer(field: string) {
-    const [colorRendererCreator, colorScheme]: [any, any] = await loadModules(['esri/renderers/smartMapping/creators/color', 'esri/renderers/smartMapping/symbology/color']);
-    const generatedColorScheme = colorScheme.getSchemeByName({name: 'Red and Green 9', geometryType: 'polygon', theme: 'above-and-below'});
-    const transformedColorScheme = colorScheme.flipColors(generatedColorScheme);
+  async setRenderer(field: string, inversedColorRamp?: boolean) {
+    if (this.renderersCache[name]) {
+      return this.applyRenderer(this.renderersCache[name]);
+    }
     const params = {
       layer: this.layer,
       classificationMethod: 'natural-breaks',
       field,
-      numClasses: 10,
-      colorScheme: transformedColorScheme
+      numClasses: 10
     };
+    this.buildRenderer(field, params, inversedColorRamp);
+  }
+
+  async setRendererByValueExpression(name: string, valueExpression: string, view: __esri.View, inversedColorRamp?: boolean) {
+    if (this.renderersCache[name]) {
+      return this.applyRenderer(this.renderersCache[name]);
+    }
+    const params = {
+      layer: this.layer,
+      classificationMethod: 'natural-breaks',
+      valueExpression,
+      view,
+      numClasses: 10
+    };
+    this.buildRenderer(name, params, inversedColorRamp);
+  }
+
+  private async buildRenderer(name: string, params: __esri.colorCreateClassBreaksRendererParams, inversedColorRamp?: boolean) {
+    const [colorRendererCreator, colorScheme]: [__esri.color, __esri.symbologyColor] = await loadModules(['esri/renderers/smartMapping/creators/color', 'esri/renderers/smartMapping/symbology/color']);
+    let generatedColorScheme = colorScheme.getSchemeByName({name: 'Red and Green 9', geometryType: 'polygon', theme: 'above-and-below'});
+    if (inversedColorRamp) {
+      generatedColorScheme = colorScheme.flipColors(generatedColorScheme);
+    }
+    params.colorScheme = generatedColorScheme;
     const rendererResponse = await colorRendererCreator.createClassBreaksRenderer(params);
-    this.layer.renderer = rendererResponse.renderer;
+    this.renderersCache[name] = rendererResponse.renderer;
+    this.applyRenderer(rendererResponse.renderer);
+  }
+
+  private applyRenderer(renderer: __esri.Renderer) {
+    this.layer.renderer = renderer;
   }
 }
