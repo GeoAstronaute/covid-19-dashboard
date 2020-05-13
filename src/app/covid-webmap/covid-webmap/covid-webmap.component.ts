@@ -1,13 +1,14 @@
-import { Component, ViewChild, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ViewChild, ChangeDetectionStrategy, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { WebmapComponent } from 'src/app/webmap/webmap/webmap.component';
 import { Store } from '@ngrx/store';
 
 import * as fromRoot from '../../stores';
-import { filter, take } from 'rxjs/operators';
+import { filter, take, takeUntil } from 'rxjs/operators';
 import { CovidWebmapLayerService } from 'src/app/services/covid-webmap-layer.service';
 import { WebmapUtilsService } from 'src/app/services/webmap-utils.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { selectCountry } from 'src/app/stores/country/country.actions';
+import { MatButtonToggleGroup, MatButtonToggleChange } from '@angular/material/button-toggle';
 
 @Component({
   selector: 'co19-covid-webmap',
@@ -15,8 +16,9 @@ import { selectCountry } from 'src/app/stores/country/country.actions';
   styleUrls: ['./covid-webmap.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CovidWebmapComponent implements OnInit {
+export class CovidWebmapComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(WebmapComponent) webmap: WebmapComponent;
+  @ViewChild(MatButtonToggleGroup) symbologyToggle: MatButtonToggleGroup;
   countryLayer: __esri.FeatureLayer;
   isCovidDataLoaded$ = this.store.select(fromRoot.isLoaded);
   latestData$ = this.store.select(fromRoot.selectLatestDataWithCountryInfo);
@@ -24,6 +26,26 @@ export class CovidWebmapComponent implements OnInit {
   countryLayerView: __esri.FeatureLayerView;
   highlight: __esri.Handle;
   clickedCountry$ = new BehaviorSubject<__esri.Graphic>(null);
+  componentDestroyed$ = new Subject<void>();
+  symbologies = {
+    deaths: {
+      inversed: true
+    },
+    recovered: {
+      inversed: false
+    },
+    confirmed: {
+      inversed: true
+    },
+    deathsPercentage: {
+      valueExpression: '($feature.deaths / $feature.confirmed) * 100',
+      inversed: true
+    },
+    recoveredPercentage: {
+      valueExpression: '($feature.recovered / $feature.confirmed) * 100',
+      inversed: false
+    }
+  };
 
   constructor(
     private store: Store,
@@ -32,10 +54,24 @@ export class CovidWebmapComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.selectedCountry$.pipe(filter(country => !!country))
+    this.selectedCountry$.pipe(
+      filter(country => !!country),
+      takeUntil(this.componentDestroyed$)
+    )
     .subscribe(async (country) => {
       this.highlightCountry(country.alpha2Code);
       this.centerWebmap([country.latlng[1], country.latlng[0]]);
+    });
+  }
+
+  ngAfterViewInit() {
+    this.symbologyToggle.change
+    .pipe(takeUntil(this.componentDestroyed$))
+    .subscribe((change: MatButtonToggleChange) => {
+      const valueExpression = this.symbologies[change.value].valueExpression;
+      const inversed = this.symbologies[change.value].inversed;
+      valueExpression ? this.covidWebmapLayerService.setRendererByValueExpression(change.value, valueExpression, this.webmap.view, inversed)
+      : this.covidWebmapLayerService.setRenderer(change.value, inversed);
     });
   }
 
@@ -58,108 +94,10 @@ export class CovidWebmapComponent implements OnInit {
   }
 
   async initializeLayer() {
-    // const [FeatureLayer, ClassBreaksRenderer]: [__esri.FeatureLayerConstructor, any] = await loadModules([
-    //   'esri/layers/FeatureLayer',
-    //   'esri/renderers/ClassBreaksRenderer'
-    // ]);
-    // const countryLayer = new FeatureLayer({
-    //   url:
-    //     'https://services7.arcgis.com/bxmuD0WlNbMDdTJ6/arcgis/rest/services/world_countries/FeatureServer/0',
-    // });
-    // const query = countryLayer.createQuery();
-    // query.returnGeometry = true;
-    // query.geometryPrecision = 1;
-    // query.outFields = ['CNTR_ID as iso2, Name'];
-    // const result = await countryLayer.queryFeatures(query);
-    this.latestData$.pipe(filter(d => d?.length > 0), take(1)).subscribe(async (data) => {
-      this.countryLayer = await this.covidWebmapLayerService.buildLayer(data);
-      // const graphics = result.features.map((graphic) => {
-      //   const covidData = data.find(
-      //     (d) => d.alpha2Code === graphic.attributes.iso2
-      //   );
-      //   return {
-      //     geometry: graphic.geometry,
-      //     attributes: {
-      //       ...graphic.attributes,
-      //       ...covidData,
-      //     }
-      //   };
-      // });
-      // this.countryLayer = new FeatureLayer({
-      //   source: graphics, // array of graphics objects
-      //   title: 'Countries',
-      //   objectIdField: 'OBJECTID',
-      //   geometryType: 'polygon',
-      //   opacity: 0.7,
-      //   spatialReference: countryLayer.spatialReference,
-      //   fields: [
-      //     {
-      //       name: 'OBJECTID',
-      //       type: 'oid',
-      //     },
-      //     {
-      //       name: 'iso2',
-      //       type: 'string',
-      //     },
-      //     {
-      //       name: 'Name',
-      //       type: 'string',
-      //     },
-      //     {
-      //       name: 'deaths',
-      //       type: 'integer',
-      //     },
-      //     {
-      //       name: 'recovered',
-      //       type: 'integer',
-      //     },
-      //     {
-      //       name: 'confirmed',
-      //       type: 'integer',
-      //     }
-      //   ]
-      // });
-      // const popup = this.countryLayer.createPopupTemplate();
-      // this.countryLayer.popupTemplate = popup;
-      // const renderer = new ClassBreaksRenderer({
-      //   // attribute of interest - Earthquake magnitude
-      //   field: 'deaths',
-      //   defaultSymbol: {
-      //     type: 'simple-fill',
-      //     color: 'gray'
-      //   }
-      // });
-
-      // renderer.addClassBreakInfo({
-      //   minValue: 0,
-      //   maxValue: 0,
-      //   symbol: {
-      //     type: 'simple-fill',
-      //     color: 'green'
-      //   }
-      // });
-
-      // renderer.addClassBreakInfo({
-      //   minValue: 1,
-      //   maxValue: 1000,
-      //   symbol: {
-      //     type: 'simple-fill',
-      //     color: 'orange'
-      //   }
-      // });
-
-      // renderer.addClassBreakInfo({
-      //   minValue: 1000,
-      //   maxValue: 1000000,
-      //   symbol: {
-      //     type: 'simple-fill',
-      //     color: 'red'
-      //   }
-      // });
-      // this.countryLayer.renderer = renderer;
-      this.webmap.map.add(this.countryLayer);
-      this.updateLayerView();
-    });
+    const latestData = await this.latestData$.pipe(filter(d => d?.length > 0), take(1)).toPromise();
+    this.countryLayer = await this.covidWebmapLayerService.buildLayer(latestData);
+    this.webmap.map.add(this.countryLayer);
+    this.updateLayerView();
   }
 
   async updateLayerView() {
@@ -174,5 +112,10 @@ export class CovidWebmapComponent implements OnInit {
     if (selectedCountry) {
       this.highlightCountry(selectedCountry.alpha2Code);
     }
+  }
+
+  ngOnDestroy() {
+    this.componentDestroyed$.next();
+    this.componentDestroyed$.complete();
   }
 }

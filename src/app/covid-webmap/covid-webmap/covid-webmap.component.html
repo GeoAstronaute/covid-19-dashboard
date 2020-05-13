@@ -1,3 +1,10 @@
+<mat-button-toggle-group name="webmapSymbology" value="deaths">
+  <mat-button-toggle value="deaths">Deaths</mat-button-toggle>
+  <mat-button-toggle value="confirmed">Confirmed</mat-button-toggle>
+  <mat-button-toggle value="recovered">Recovered</mat-button-toggle>
+  <mat-button-toggle value="deathsPercentage">% Deaths</mat-button-toggle>
+  <mat-button-toggle value="recoveredPercentage">% Recovered</mat-button-toggle>
+</mat-button-toggle-group>
 <co19-webmap (mapInit)="initializeLayer()" (typeChange)="updateLayerView()">
 
 </co19-webmap>
