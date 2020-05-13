@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { loadModules, loadCss } from 'esri-loader';
 
 @Component({
@@ -15,9 +15,10 @@ export class WebmapComponent implements OnInit {
   view: __esri.MapView | __esri.SceneView;
   map: __esri.Map;
 
-  constructor() {}
+  constructor(private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    this.cd.detach();
     this.initWebmap();
   }
 
@@ -32,6 +33,7 @@ export class WebmapComponent implements OnInit {
     this.type === '2D' ? await this.buildMapView() : await this.buildSceneView();
     this.mapInit.emit();
     this.addWidgets(this.view);
+    this.cd.detectChanges();
   }
 
   async buildMapView() {
@@ -72,6 +74,7 @@ export class WebmapComponent implements OnInit {
     type === '2D' ? await this.buildMapView() : await this.buildSceneView();
     this.typeChange.emit(type);
     this.addWidgets(this.view);
+    this.cd.detectChanges();
   }
 
   async addWidgets(view: __esri.MapView | __esri.SceneView) {
